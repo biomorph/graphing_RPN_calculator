@@ -116,10 +116,10 @@
     if(![self.dotOrLine dotOrLine:self])
     {
         if (self.bounds.size.width < self.bounds.size.height) {
-            CGContextMoveToPoint(context, 0, -self.origin.y);
+            CGContextMoveToPoint(context, 0, self.origin.y);
         }
         else {
-            CGContextMoveToPoint(context, -self.origin.x, 0);
+            CGContextMoveToPoint(context, self.origin.x, 0);
         }
         
         for (float xValue = 0; xValue <= pixelNumber; xValue++) {

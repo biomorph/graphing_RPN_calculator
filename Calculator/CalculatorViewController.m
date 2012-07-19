@@ -9,8 +9,9 @@
 #import "CalculatorViewController.h"
 #import "CalculatorBrains.h"
 #import "GraphViewController.h"
+#import "SplitViewBarButtonItemPresenter.h"
 
-@interface CalculatorViewController ()
+@interface CalculatorViewController ()<UISplitViewControllerDelegate>
 @property (nonatomic) BOOL ifUserInTheMiddleOfTyping; //Property to check if user is in the middle of typing 
 @property (nonatomic, strong) CalculatorBrains * brain; //Property to create an instance of the CalculatorBrains Class
 @property (nonatomic, strong) NSDictionary *VariableValues;//NSDictionary property to hold the variables and corresponding values for test cases
@@ -212,9 +213,21 @@
     }
 }
 
+- (GraphViewController *) splitViewGraphViewController {
+    id gvc = [self.splitViewController.viewControllers lastObject];
+    if (![gvc isKindOfClass:[GraphViewController class]]) {
+        gvc = nil;
+    }
+    return gvc;
+}
 
 - (IBAction)graphPressed:(id)sender {
-    [self performSegueWithIdentifier:@"ShowGraph" sender:sender];
+    if (![self splitViewGraphViewController]) {
+        [self performSegueWithIdentifier:@"ShowGraph" sender:sender];    }
+    else {
+        [[self splitViewGraphViewController] getProgram:[self.brain program]];
+        [[self splitViewGraphViewController] graphDescription:self.operationArray];
+    }
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -225,10 +238,57 @@
     [nextView graphDescription:self.operationArray];
     }
 }
-
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return YES;
+    if([self splitViewController]) return YES;
+    else {
+     return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+    }
+
 }
 
+- (void) awakeFromNib {
+    [super awakeFromNib];
+    self.splitViewController.delegate = self;
+}
+
+- (BOOL) splitViewController:(UISplitViewController *)svc 
+    shouldHideViewController:(UIViewController *)vc 
+               inOrientation:(UIInterfaceOrientation)orientation
+{
+    BOOL buttonDance;
+    if (![self splitViewBarButtonItemPresenter]) {
+        buttonDance = NO;
+    }
+    else if(UIInterfaceOrientationIsPortrait(orientation)) buttonDance =YES;
+
+    return buttonDance;
+}
+
+- (void) splitViewController:(UISplitViewController *)svc 
+      willHideViewController:(UIViewController *)aViewController 
+           withBarButtonItem:(UIBarButtonItem *)barButtonItem 
+        forPopoverController:(UIPopoverController *)pc
+{
+    barButtonItem.title = @"Calculator"; 
+    [self splitViewBarButtonItemPresenter].splitViewBarButtonItem = barButtonItem;
+
+}
+
+- (void) splitViewController:(UISplitViewController *)svc 
+      willShowViewController:(UIViewController *)aViewController 
+   invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+    [self splitViewBarButtonItemPresenter].splitViewBarButtonItem = nil;
+}
+
+
+- (id <SplitViewBarButtonItemPresenter>) splitViewBarButtonItemPresenter
+{
+    id detailVC = [self.splitViewController.viewControllers lastObject];
+    if (![detailVC conformsToProtocol:@protocol(SplitViewBarButtonItemPresenter)]){
+        detailVC = nil;
+    }
+return detailVC;
+}
 
 @end

@@ -9,19 +9,24 @@
 #import "GraphViewController.h"
 #import "GraphView.h"
 #import "CalculatorBrains.h"
+#import "SplitViewBarButtonItemPresenter.h"
 
-@interface GraphViewController () <GraphViewDataSource>
+@interface GraphViewController () <GraphViewDataSource, SplitViewBarButtonItemPresenter> 
 
 @property (nonatomic, weak) IBOutlet GraphView * graphView;
 @property (nonatomic, weak) NSMutableArray * operationsArray;
+@property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
 @end
 
 @implementation GraphViewController
 @synthesize graphDescription = _graphDescription;
+
 @synthesize graphSwitch = _graphSwitch;
 @synthesize graphView = _graphView;
 @synthesize programStack = _programStack;
 @synthesize operationsArray = _operationsArray;
+@synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
+@synthesize toolBar = _toolBar;
 
 
 - (id) programStack {
@@ -29,6 +34,16 @@
     return _programStack;
 }
 
+
+- (void) setSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem{
+    if (_splitViewBarButtonItem !=splitViewBarButtonItem) {
+        NSMutableArray *toolbarItems = [self.toolBar.items mutableCopy];
+        if(_splitViewBarButtonItem) [toolbarItems removeObject:_splitViewBarButtonItem];
+        if (splitViewBarButtonItem) [toolbarItems insertObject:splitViewBarButtonItem atIndex:0];
+        self.toolBar.items = toolbarItems;
+        _splitViewBarButtonItem = splitViewBarButtonItem;
+    }
+}
 
 -(void) setGraphView:(GraphView *)graphView{
     _graphView = graphView;
@@ -46,7 +61,7 @@
     self.graphView.dataSource = self;
     self.graphView.dotOrLine = self;
     self.graphDescription.text = [CalculatorBrains descriptionOfProgram:self.programStack :self.operationsArray];
-
+    //self.navigationDescription.title = [CalculatorBrains descriptionOfProgram:self.programStack :self.operationsArray];
 }
 
 
@@ -56,6 +71,7 @@
 
 - (void) getProgram : (id)program {
     self.programStack = program;
+    [self.graphView setNeedsDisplay];
 }
 
 - (double)graphPoints:(GraphView *) sender:(double)xValue {
@@ -84,8 +100,6 @@
     return YES;
 }
 
-- (void)viewDidUnload {
-    [self setGraphSwitch:nil];
-    [super viewDidUnload];
-}
+
+
 @end

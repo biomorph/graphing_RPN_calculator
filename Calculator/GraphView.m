@@ -19,9 +19,12 @@
 @synthesize dataSource = _dataSource;
 @synthesize dotOrLine = _dotOrLine;
 #define DEFAULT_SCALE 1.0;
+#define UserDefaultsScaleKey   @"SCALE"
+#define UserDefaultsOriginXKey @"ORIGIN_X"
+#define UserDefaultsOriginYKey @"ORIGIN_Y"
 
 
-
+//getting default scale for first run
 - (CGFloat) scale
 {
     if (!_scale){
@@ -31,17 +34,19 @@
     else return _scale;
 }
 
+//setting a scale and updating my NSUSerDefaults and redrawing everytime called(pinch gesture)
 - (void) setScale:(CGFloat)scale
 {
     if (scale != _scale){
-        //_scale = [[[self.defaults objectForKey:@"UserDefaults"] objectAtIndex:0] floatValue];
         _scale = scale;
+        [[NSUserDefaults standardUserDefaults] setFloat:_scale forKey:UserDefaultsScaleKey];
         [self setNeedsDisplay];
 
     }
     
 }
 
+//getting default scale for first run
 - (CGPoint) origin
 {
     if((_origin.x == 0.0) && (_origin.y == 0.0)) {
@@ -51,23 +56,28 @@
     return _origin;
 }
 
+//setting a scale and updating my NSUSerDefaults and redrawing everytime called (pan and triple tap)
 - (void) setOrigin:(CGPoint)origin
 {
     if (CGPointEqualToPoint(origin, _origin) == NO) {
         _origin = origin;
+        [[NSUserDefaults standardUserDefaults] setFloat:_origin.x forKey:UserDefaultsOriginXKey];
+        [[NSUserDefaults standardUserDefaults] setFloat:_origin.y forKey:UserDefaultsOriginYKey];
         [self setNeedsDisplay];
     }
 }
 
+//method performing pinch gesture
 - (void) pinch:(UIPinchGestureRecognizer *)gesture
 {
     if ((gesture.state == UIGestureRecognizerStateChanged)||(gesture.state == UIGestureRecognizerStateEnded)){
         self.scale *= gesture.scale;
         gesture.scale = 1;
-        [self setNeedsDisplay];
+
     }
 }
 
+//method performing pan gesture
 - (void) pan:(UIPanGestureRecognizer *)gesture
 {
     if ((gesture.state == UIGestureRecognizerStateChanged)||(gesture.state == UIGestureRecognizerStateEnded)){
@@ -78,6 +88,7 @@
     }
 }
 
+//method performing triple tap gesture
 - (void) tripleTap:(UITapGestureRecognizer *)gesture
 {
     if ((gesture.state == UIGestureRecognizerStateEnded) && (gesture.numberOfTapsRequired == 3)) {
@@ -86,9 +97,30 @@
     }
 }
 
+
+//I'm setting up my userdefaults in here and scale and origin for first time run
 - (void) setup
 {
     self.contentMode = UIViewContentModeRedraw;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    CGPoint midPoint; // center of our bounds in our coordinate system
+    midPoint.x = self.bounds.origin.x + self.bounds.size.width/2;
+    midPoint.y = self.bounds.origin.y + self.bounds.size.height/2;
+    
+    NSDictionary* defaultUserDefaults =  [NSDictionary dictionaryWithObjectsAndKeys:
+                                         [NSNumber numberWithFloat:1.0], UserDefaultsScaleKey,
+                                         [NSNumber numberWithFloat:midPoint.x], UserDefaultsOriginXKey,
+                                         [NSNumber numberWithFloat:midPoint.y], UserDefaultsOriginYKey,
+                                         nil];
+    
+    [userDefaults registerDefaults:defaultUserDefaults];
+    
+    
+    self.scale = [userDefaults floatForKey:UserDefaultsScaleKey];
+    
+    CGPoint origin = CGPointMake([userDefaults floatForKey:UserDefaultsOriginXKey],
+                                 [userDefaults floatForKey:UserDefaultsOriginYKey]);
+    self.origin = origin;
 }
 
 - (void)awakeFromNib
@@ -105,6 +137,7 @@
 }
 
 
+//custom draw rect method where I am going to plot line or dot graphs 
 - (void)drawRect:(CGRect)rect
 {
     //Make a context

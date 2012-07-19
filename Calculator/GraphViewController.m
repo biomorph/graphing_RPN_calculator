@@ -9,13 +9,13 @@
 #import "GraphViewController.h"
 #import "GraphView.h"
 #import "CalculatorBrains.h"
-#import "SplitViewBarButtonItemPresenter.h"
+#import "SplitViewBarButtonItemPresenter.h" //protocol for splitview
 
-@interface GraphViewController () <GraphViewDataSource, SplitViewBarButtonItemPresenter> 
+@interface GraphViewController () <GraphViewDataSource, SplitViewBarButtonItemPresenter> //set myself as delegate for  protocols from GraphView
 
-@property (nonatomic, weak) IBOutlet GraphView * graphView;
-@property (nonatomic, weak) NSMutableArray * operationsArray;
-@property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
+@property (nonatomic, weak) IBOutlet GraphView * graphView; //outlet for GraphView
+@property (nonatomic, weak) NSMutableArray * operationsArray; //array of operations stored here
+@property (nonatomic, weak) IBOutlet UIToolbar *toolBar; // toolBar for iPad splitView
 @end
 
 @implementation GraphViewController
@@ -31,16 +31,14 @@
 @synthesize graphNavigationBar = _graphNavigationBar;
 
 
+//programStack lazy instantiation
 - (id) programStack {
     if (!_programStack)_programStack=[[NSArray alloc]init];
     return _programStack;
 }
 
 
-- (void) setGraphNavigationBar:(UINavigationItem *)graphNavigationBar{
-    _graphNavigationBar = graphNavigationBar;
-}
-
+// method for setting up a tool bar button to bring up calculator view
 - (void) setSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem{
     if (_splitViewBarButtonItem !=splitViewBarButtonItem) {
         NSMutableArray *toolbarItems = [self.toolBar.items mutableCopy];
@@ -51,6 +49,7 @@
     }
 }
 
+//graphview setter where we also implement the gestures
 -(void) setGraphView:(GraphView *)graphView{
     _graphView = graphView;
     
@@ -72,15 +71,15 @@
 
 }
 
-
+// button method to change graph display from line to dot for iPad
 - (IBAction)iPadLineOrDotPressed:(id)sender {
     if ([self.ipadLineOrDot.title isEqualToString:@"LineGraph"])
         self.ipadLineOrDot.title = @"DotGraph";
     else self.ipadLineOrDot.title = @"LineGraph";
     [self.graphView setNeedsDisplay];
-    NSLog(@"switch state %@",self.ipadLineOrDot.title);
 }
 
+// button method to change graph display from line to dot for iPhone
 - (IBAction)lineOrDotPressed:(id)sender {
     if ([self.lineOrDot.title isEqualToString:@"LineGraph"])
     self.lineOrDot.title = @"DotGraph";
@@ -89,30 +88,30 @@
 }
 
 
-
+// method which gets program which is passed from CalculatorViewController during a segue
 - (void) getProgram : (id)program {
     self.programStack = program;
     [self.graphView setNeedsDisplay];
 }
 
+// this is a GraphViewDataSource protocol method (declared in graphView.h) which asks CalculatorBrain for a result when passed an x, its value and corresponding programStack
 - (double)graphPoints:(GraphView *) sender:(double)xValue {
-    
     
     NSDictionary * variableValues= [[NSDictionary alloc]initWithObjectsAndKeys:[NSNumber numberWithDouble:xValue],@"x", nil];
     
     double result = [CalculatorBrains runprogram:self.programStack :variableValues];
-    return result;
-   
+    return result;   
     
 }
 
+// this method gets the graphDescription from CalculatorBrain, it is passed an array of operations during segue from CalculatorViewController
 - (void)graphDescription:(NSMutableArray*) operations{
     self.operationsArray = operations;
     self.graphTitle.title = [CalculatorBrains descriptionOfProgram:self.programStack :self.operationsArray];
 
 }
 
-
+// this is a GraphViewDataSource protocol method (declared in graphView.h) that checks status of the line o rDot status of the lineOrDot buttons
 - (NSString *) dotOrLine:(GraphView *)sender{
     if (self.lineOrDot.title)
     return self.lineOrDot.title;
@@ -120,17 +119,9 @@
 }
 
 
-
+// supports all autorotation
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
     return YES;
 }
 
-
-
-
-
-- (void)viewDidUnload {
-    [self setIpadLineOrDot:nil];
-    [super viewDidUnload];
-}
 @end

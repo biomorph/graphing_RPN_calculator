@@ -13,13 +13,13 @@
 @interface GraphViewController : UIViewController
 
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *graphTitle;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *ipadLineOrDot;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *graphTitle; //graphTitle for iPad
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *ipadLineOrDot;//graphSwitch for iPad
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *lineOrDot;
-@property (weak, nonatomic) IBOutlet UINavigationItem *graphNavigationBar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *lineOrDot; //graphSwitch for iPhone
+@property (weak, nonatomic) IBOutlet UINavigationItem *graphNavigationBar;//graph Title for iPhone
 
-- (void) getProgram : (id)program;
-- (void) graphDescription:(NSMutableArray*) operations;
-@property (nonatomic, strong) id programStack;
+- (void) getProgram : (id)program; //method to get me the program from brain
+- (void) graphDescription:(NSMutableArray*) operations; //method to get me array of operations for description from brain
+@property (nonatomic, strong) id programStack; //programStack from brain local copy
 @end

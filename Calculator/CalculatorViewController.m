@@ -9,9 +9,9 @@
 #import "CalculatorViewController.h"
 #import "CalculatorBrains.h"
 #import "GraphViewController.h"
-#import "SplitViewBarButtonItemPresenter.h"
+#import "SplitViewBarButtonItemPresenter.h" //splitView protocol
 
-@interface CalculatorViewController ()<UISplitViewControllerDelegate>
+@interface CalculatorViewController ()<UISplitViewControllerDelegate> //setting myself as a delegate of splitViewController
 @property (nonatomic) BOOL ifUserInTheMiddleOfTyping; //Property to check if user is in the middle of typing 
 @property (nonatomic, strong) CalculatorBrains * brain; //Property to create an instance of the CalculatorBrains Class
 @property (nonatomic, strong) NSDictionary *VariableValues;//NSDictionary property to hold the variables and corresponding values for test cases
@@ -213,6 +213,8 @@
     }
 }
 
+
+// getting the detail view
 - (GraphViewController *) splitViewGraphViewController {
     id gvc = [self.splitViewController.viewControllers lastObject];
     if (![gvc isKindOfClass:[GraphViewController class]]) {
@@ -221,6 +223,7 @@
     return gvc;
 }
 
+// action method that performs segue in iPhone (if part) and target action for iPad (else part)
 - (IBAction)graphPressed:(id)sender {
     if (![self splitViewGraphViewController]) {
         [self performSegueWithIdentifier:@"ShowGraph" sender:sender];    }
@@ -230,6 +233,8 @@
     }
 }
 
+
+//preparing for segue only on iPhone, here is where I pass the current program and array of operations to the GraphViewController
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"ShowGraph"]){
         
@@ -238,6 +243,8 @@
     [nextView graphDescription:self.operationArray];
     }
 }
+
+//perform autorotation only when splitViewController is present (iPad). I was too lazy to implement for iPhone
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     if([self splitViewController]) return YES;
     else {
@@ -246,11 +253,14 @@
 
 }
 
+
 - (void) awakeFromNib {
     [super awakeFromNib];
     self.splitViewController.delegate = self;
 }
 
+
+// hiding the splitViewController when in portrait mode and displaying only in landscape mode
 - (BOOL) splitViewController:(UISplitViewController *)svc 
     shouldHideViewController:(UIViewController *)vc 
                inOrientation:(UIInterfaceOrientation)orientation
@@ -264,6 +274,7 @@
     return buttonDance;
 }
 
+// presents a popover bar button in GraphViewController
 - (void) splitViewController:(UISplitViewController *)svc 
       willHideViewController:(UIViewController *)aViewController 
            withBarButtonItem:(UIBarButtonItem *)barButtonItem 
@@ -274,6 +285,7 @@
 
 }
 
+// removing the bar button item in the GraphViewController 
 - (void) splitViewController:(UISplitViewController *)svc 
       willShowViewController:(UIViewController *)aViewController 
    invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
@@ -282,6 +294,7 @@
 }
 
 
+// returns the detail view controller only if implements the SplitViewBarButtonItemPresenter protocol, which GraphViewController does
 - (id <SplitViewBarButtonItemPresenter>) splitViewBarButtonItemPresenter
 {
     id detailVC = [self.splitViewController.viewControllers lastObject];

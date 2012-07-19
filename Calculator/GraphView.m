@@ -115,12 +115,8 @@
     
     if([[self.dotOrLine dotOrLine:self]isEqualToString:@"DotGraph"])
     {
-        if (self.bounds.size.width < self.bounds.size.height) {
-            CGContextMoveToPoint(context, 0, self.origin.y);
-        }
-        else {
-            CGContextMoveToPoint(context, self.origin.x, 0);
-        }
+        
+        CGContextMoveToPoint(context,0, self.origin.y);
         
         for (float xValue = 0; xValue <= pixelNumber; xValue++) {
         UIGraphicsPushContext(context);

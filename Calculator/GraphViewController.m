@@ -19,7 +19,6 @@
 @end
 
 @implementation GraphViewController
-@synthesize graphDescription = _graphDescription;
 
 @synthesize graphTitle = _graphTitle;
 @synthesize ipadLineOrDot = _ipadLineOrDot;
@@ -29,6 +28,7 @@
 @synthesize operationsArray = _operationsArray;
 @synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
 @synthesize toolBar = _toolBar;
+@synthesize graphNavigationBar = _graphNavigationBar;
 
 
 - (id) programStack {
@@ -36,6 +36,10 @@
     return _programStack;
 }
 
+
+- (void) setGraphNavigationBar:(UINavigationItem *)graphNavigationBar{
+    _graphNavigationBar = graphNavigationBar;
+}
 
 - (void) setSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem{
     if (_splitViewBarButtonItem !=splitViewBarButtonItem) {
@@ -63,8 +67,7 @@
     self.graphView.dataSource = self;
     self.graphView.dotOrLine = self;
     
-    self.graphDescription.text = [CalculatorBrains descriptionOfProgram:self.programStack :self.operationsArray];
-    
+    self.graphNavigationBar.title = [CalculatorBrains descriptionOfProgram:self.programStack :self.operationsArray];
 
 }
 

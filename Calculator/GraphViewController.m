@@ -21,7 +21,9 @@
 @implementation GraphViewController
 @synthesize graphDescription = _graphDescription;
 
-@synthesize graphSwitch = _graphSwitch;
+@synthesize graphTitle = _graphTitle;
+@synthesize ipadLineOrDot = _ipadLineOrDot;
+@synthesize lineOrDot = _lineOrDot;
 @synthesize graphView = _graphView;
 @synthesize programStack = _programStack;
 @synthesize operationsArray = _operationsArray;
@@ -60,14 +62,29 @@
     [self.graphView setNeedsDisplay];
     self.graphView.dataSource = self;
     self.graphView.dotOrLine = self;
+    
     self.graphDescription.text = [CalculatorBrains descriptionOfProgram:self.programStack :self.operationsArray];
-    //self.navigationDescription.title = [CalculatorBrains descriptionOfProgram:self.programStack :self.operationsArray];
+    
+
 }
 
 
-- (IBAction)graphDotOrLine {
+- (IBAction)iPadLineOrDotPressed:(id)sender {
+    if ([self.ipadLineOrDot.title isEqualToString:@"LineGraph"])
+        self.ipadLineOrDot.title = @"DotGraph";
+    else self.ipadLineOrDot.title = @"LineGraph";
+    [self.graphView setNeedsDisplay];
+    NSLog(@"switch state %@",self.ipadLineOrDot.title);
+}
+
+- (IBAction)lineOrDotPressed:(id)sender {
+    if ([self.lineOrDot.title isEqualToString:@"LineGraph"])
+    self.lineOrDot.title = @"DotGraph";
+    else self.lineOrDot.title = @"LineGraph";
     [self.graphView setNeedsDisplay];
 }
+
+
 
 - (void) getProgram : (id)program {
     self.programStack = program;
@@ -87,11 +104,15 @@
 
 - (void)graphDescription:(NSMutableArray*) operations{
     self.operationsArray = operations;
+    self.graphTitle.title = [CalculatorBrains descriptionOfProgram:self.programStack :self.operationsArray];
 
 }
 
-- (BOOL) dotOrLine:(GraphView *)sender{
-    return self.graphSwitch.on;
+
+- (NSString *) dotOrLine:(GraphView *)sender{
+    if (self.lineOrDot.title)
+    return self.lineOrDot.title;
+    else return self.ipadLineOrDot.title;
 }
 
 
@@ -102,4 +123,10 @@
 
 
 
+
+
+- (void)viewDidUnload {
+    [self setIpadLineOrDot:nil];
+    [super viewDidUnload];
+}
 @end

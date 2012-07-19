@@ -432,7 +432,7 @@
             </objects>
             <point key="canvasLocation" x="1680" y="77"/>
         </scene>
-        <!--Graph View Controller - Graph-->
+        <!--Graph View Controller-->
         <scene sceneID="YAv-rR-3xp">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AGe-Vi-OXt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -446,30 +446,30 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Lat-R0-XbX">
-                                        <rect key="frame" x="25" y="384" width="275" height="21"/>
+                                        <rect key="frame" x="25" y="7" width="275" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="0Mm-qu-W9M">
-                                        <rect key="frame" x="0.0" y="384" width="79" height="27"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <connections>
-                                            <action selector="graphDotOrLine" destination="6jL-ld-42c" eventType="valueChanged" id="dw3-Jc-tEE"/>
-                                        </connections>
-                                    </switch>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Graph" id="5dJ-Jh-ujs"/>
+                    <navigationItem key="navigationItem" id="5dJ-Jh-ujs">
+                        <nil key="title"/>
+                        <barButtonItem key="rightBarButtonItem" title="DotGraph" id="2Er-lJ-aQS">
+                            <connections>
+                                <action selector="lineOrDotPressed:" destination="6jL-ld-42c" id="LdT-c6-azL"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="graphDescription" destination="Lat-R0-XbX" id="ec0-jB-1qa"/>
-                        <outlet property="graphSwitch" destination="0Mm-qu-W9M" id="ANA-DJ-9ks"/>
                         <outlet property="graphView" destination="bbB-Ra-15s" id="iDc-SP-P86"/>
+                        <outlet property="lineOrDot" destination="2Er-lJ-aQS" id="QAU-Bv-Tbz"/>
                     </connections>
                 </viewController>
             </objects>
@@ -508,9 +508,12 @@
         <class className="GraphViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GraphViewController.h"/>
             <relationships>
+                <relationship kind="outlet" name="dotPlot" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="graphDescription" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="graphSwitch" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="graphTitle" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
+                <relationship kind="outlet" name="lineOrDot" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="toolBar" candidateClass="UIToolbar"/>
             </relationships>
         </class>
     </classes>

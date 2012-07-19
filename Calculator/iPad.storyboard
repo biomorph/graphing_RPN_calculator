@@ -23,14 +23,29 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Ai7-sq-Cpt">
                                 <rect key="frame" x="0.0" y="-5" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="FDC-ze-6Wc"/>
+                                    <barButtonItem title="Item" style="plain" id="E1w-rX-7sZ">
+                                        <connections>
+                                            <action selector="graphTitle:" destination="HGw-5q-cNt" id="xpy-fv-Wt0"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ME2-fu-gQW"/>
+                                    <barButtonItem title="DotGraph" id="sdj-ac-uox">
+                                        <connections>
+                                            <action selector="iPadLineOrDotPressed:" destination="HGw-5q-cNt" id="Hng-uA-gyU"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
                     <connections>
+                        <outlet property="graphTitle" destination="E1w-rX-7sZ" id="G61-nD-BBb"/>
                         <outlet property="graphView" destination="wLO-Vf-rep" id="x4t-Vw-iGQ"/>
+                        <outlet property="ipadLineOrDot" destination="sdj-ac-uox" id="mQB-kb-cSx"/>
                         <outlet property="toolBar" destination="Ai7-sq-Cpt" id="E2H-uL-GdC"/>
                     </connections>
                 </viewController>
@@ -507,9 +522,13 @@
         <class className="GraphViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GraphViewController.h"/>
             <relationships>
+                <relationship kind="outlet" name="dotPlot" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="graphDescription" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="graphSwitch" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="graphTitle" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
+                <relationship kind="outlet" name="iPadLineOrDot" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="ipadLineOrDot" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="lineOrDot" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="toolBar" candidateClass="UIToolbar"/>
             </relationships>
         </class>

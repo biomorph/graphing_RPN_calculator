@@ -113,7 +113,7 @@
     [AxesDrawer drawAxesInRect:rect originAtPoint:self.origin scale:self.scale];
     CGFloat pixelNumber = [self contentScaleFactor]*self.bounds.size.width;
     
-    if(![self.dotOrLine dotOrLine:self])
+    if([[self.dotOrLine dotOrLine:self]isEqualToString:@"DotGraph"])
     {
         if (self.bounds.size.width < self.bounds.size.height) {
             CGContextMoveToPoint(context, 0, self.origin.y);
@@ -132,7 +132,7 @@
         }
     CGContextStrokePath(context);
     }
-        else if ([self.dotOrLine dotOrLine:self]) 
+        else if ([[self.dotOrLine dotOrLine:self] isEqualToString:@"LineGraph"]) 
         {
             for (float xValue = 0; xValue <= pixelNumber; xValue++) {
                 [[UIColor blueColor]set];

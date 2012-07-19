@@ -12,7 +12,7 @@
 
 @protocol GraphViewDataSource
 - (double)graphPoints:(GraphView *) sender:(double)xValue;
-- (BOOL) dotOrLine: (GraphView *) sender;
+- (NSString *) dotOrLine: (GraphView *) sender;
 @end
 
 @interface GraphView : UIView

@@ -20,10 +20,13 @@
 @synthesize dotOrLine = _dotOrLine;
 #define DEFAULT_SCALE 1.0;
 
+
+
 - (CGFloat) scale
 {
     if (!_scale){
         return DEFAULT_SCALE;
+         
     }
     else return _scale;
 }
@@ -31,6 +34,7 @@
 - (void) setScale:(CGFloat)scale
 {
     if (scale != _scale){
+        //_scale = [[[self.defaults objectForKey:@"UserDefaults"] objectAtIndex:0] floatValue];
         _scale = scale;
         [self setNeedsDisplay];
 
@@ -60,6 +64,7 @@
     if ((gesture.state == UIGestureRecognizerStateChanged)||(gesture.state == UIGestureRecognizerStateEnded)){
         self.scale *= gesture.scale;
         gesture.scale = 1;
+        [self setNeedsDisplay];
     }
 }
 
@@ -77,9 +82,7 @@
 {
     if ((gesture.state == UIGestureRecognizerStateEnded) && (gesture.numberOfTapsRequired == 3)) {
         CGPoint translation = [gesture locationInView:self];
-        //self.origin = CGPointMake(10, 10);
         self.origin = CGPointMake(translation.x,translation.y);
-    
     }
 }
 
@@ -109,7 +112,7 @@
     
     //Make a CGRect to pass to make axes
     CGContextSetLineWidth(context, 2.0);
-    [[UIColor blueColor] set];
+    [[UIColor blueColor] set]; 
     [AxesDrawer drawAxesInRect:rect originAtPoint:self.origin scale:self.scale];
     CGFloat pixelNumber = [self contentScaleFactor]*self.bounds.size.width;
     

@@ -63,7 +63,8 @@
     
     [self.graphView addGestureRecognizer:tap];
     
-    [self.graphView setNeedsDisplay];
+   
+    
     self.graphView.dataSource = self;
     self.graphView.dotOrLine = self;
     

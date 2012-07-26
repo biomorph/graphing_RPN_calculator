@@ -56,7 +56,7 @@
     NSString *digit = sender.currentTitle;
     if (self.ifUserInTheMiddleOfTyping)
     {
-        self.display.text = [self.display.text stringByAppendingFormat:digit];
+        self.display.text = [self.display.text stringByAppendingString:digit];
     }
     else 
     {
@@ -73,7 +73,7 @@
     NSString *variable = sender.currentTitle;
     [self.brain pushOperand:variable];
     id program = [self.brain program];
-    self.descriptionDisplay.text=[self.descriptionDisplay.text stringByAppendingFormat:[CalculatorBrains descriptionOfProgram:program:self.operationArray]];
+    self.descriptionDisplay.text=[self.descriptionDisplay.text stringByAppendingString:[CalculatorBrains descriptionOfProgram:program:self.operationArray]];
     self.descriptionDisplay.text = [self.descriptionDisplay.text stringByAppendingFormat:@","];
     
     if ([self.descriptionDisplay.text length] > 35)
@@ -163,7 +163,7 @@
 {
     [self.brain pushOperand:self.display.text];
     id program = [self.brain program];
-    self.descriptionDisplay.text=[self.descriptionDisplay.text stringByAppendingFormat:[CalculatorBrains descriptionOfProgram:program:self.operationArray]];
+    self.descriptionDisplay.text=[self.descriptionDisplay.text stringByAppendingString:[CalculatorBrains descriptionOfProgram:program:self.operationArray]];
     self.descriptionDisplay.text = [self.descriptionDisplay.text stringByAppendingFormat:@","];
     
     if ([self.descriptionDisplay.text length] > 35)
@@ -186,7 +186,7 @@
     {
     double result = [self.brain performOperation:sender.currentTitle];
         id program = [self.brain program];
-        self.descriptionDisplay.text=[self.descriptionDisplay.text stringByAppendingFormat:[CalculatorBrains descriptionOfProgram:program:self.operationArray]];
+        self.descriptionDisplay.text=[self.descriptionDisplay.text stringByAppendingString:[CalculatorBrains descriptionOfProgram:program:self.operationArray]];
         self.descriptionDisplay.text = [self.descriptionDisplay.text stringByAppendingFormat:@","];
         
         if ([self.descriptionDisplay.text length] > 35)
@@ -203,7 +203,7 @@
     {
         [self.brain pushOperand:sender.currentTitle];
         id program = [self.brain program];
-        self.descriptionDisplay.text=[self.descriptionDisplay.text stringByAppendingFormat:[CalculatorBrains descriptionOfProgram:program:self.operationArray]];
+        self.descriptionDisplay.text=[self.descriptionDisplay.text stringByAppendingString:[CalculatorBrains descriptionOfProgram:program:self.operationArray]];
         self.descriptionDisplay.text = [self.descriptionDisplay.text stringByAppendingFormat:@","];
         
         if ([self.descriptionDisplay.text length] > 35)
@@ -265,7 +265,7 @@
     shouldHideViewController:(UIViewController *)vc 
                inOrientation:(UIInterfaceOrientation)orientation
 {
-    BOOL buttonDance;
+    BOOL buttonDance = NO;
     if (![self splitViewBarButtonItemPresenter]) {
         buttonDance = NO;
     }

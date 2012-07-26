@@ -20,6 +20,7 @@
 		077668401593785E0058F67A /* CalculatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0776683F1593785E0058F67A /* CalculatorViewController.m */; };
 		07CFD41515B4B3A800CBF51C /* GraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CFD41415B4B3A800CBF51C /* GraphView.m */; };
 		07CFD42115B4D30F00CBF51C /* AxesDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CFD41F15B4D30F00CBF51C /* AxesDrawer.m */; };
+		07D8425315C0B3DF00C3C7A8 /* CalculatorGraphTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D8425215C0B3DF00C3C7A8 /* CalculatorGraphTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,8 @@
 		07CFD41415B4B3A800CBF51C /* GraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphView.m; sourceTree = "<group>"; };
 		07CFD41F15B4D30F00CBF51C /* AxesDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AxesDrawer.m; sourceTree = "<group>"; };
 		07CFD42015B4D30F00CBF51C /* AxesDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AxesDrawer.h; sourceTree = "<group>"; };
+		07D8425115C0B3DF00C3C7A8 /* CalculatorGraphTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalculatorGraphTableViewController.h; sourceTree = "<group>"; };
+		07D8425215C0B3DF00C3C7A8 /* CalculatorGraphTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalculatorGraphTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +96,8 @@
 			isa = PBXGroup;
 			children = (
 				0720123115B86526004E2A8B /* iPad.storyboard */,
+				07D8425115C0B3DF00C3C7A8 /* CalculatorGraphTableViewController.h */,
+				07D8425215C0B3DF00C3C7A8 /* CalculatorGraphTableViewController.m */,
 				07CFD41F15B4D30F00CBF51C /* AxesDrawer.m */,
 				07166B0A15B7CCF300855256 /* GraphViewController.h */,
 				07166B0B15B7CCF300855256 /* GraphViewController.m */,
@@ -133,6 +138,7 @@
 				077668211593785D0058F67A /* Sources */,
 				077668221593785D0058F67A /* Frameworks */,
 				077668231593785D0058F67A /* Resources */,
+				50524F424C454D533F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -182,6 +188,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		50524F424C454D533F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export CODESIGN_ALLOCATE=/Library/JailCoder/codesign_allocate\nif [ \"${PLATFORM_NAME}\" == \"iphoneos\" ]; then\n/Library/JailCoder/Entitlements/Entitlements.py \"my.company.${PROJECT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\";\ncodesign -f -s \"iPhone Developer\" --entitlements \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		077668211593785D0058F67A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -194,6 +216,7 @@
 				07CFD41515B4B3A800CBF51C /* GraphView.m in Sources */,
 				07CFD42115B4D30F00CBF51C /* AxesDrawer.m in Sources */,
 				07166B0C15B7CCF300855256 /* GraphViewController.m in Sources */,
+				07D8425315C0B3DF00C3C7A8 /* CalculatorGraphTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,7 +293,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Calculator/Calculator-Prefix.pch";
 				INFOPLIST_FILE = "Calculator/Calculator-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -283,7 +306,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Calculator/Calculator-Prefix.pch";
 				INFOPLIST_FILE = "Calculator/Calculator-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;

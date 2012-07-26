@@ -15,6 +15,7 @@
 -(NSString *) performBackSpace: (NSString *) display;
 -(NSArray *) performUndo;
 
+//program is always guaranteed to be a Property List
 @property (readonly) id program;
 
 + (double) runprogram : (id)program;

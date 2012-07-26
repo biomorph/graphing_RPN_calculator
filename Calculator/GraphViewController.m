@@ -9,9 +9,10 @@
 #import "GraphViewController.h"
 #import "GraphView.h"
 #import "CalculatorBrains.h"
+#import "CalculatorGraphTableViewController.h"
 #import "SplitViewBarButtonItemPresenter.h" //protocol for splitview
 
-@interface GraphViewController () <GraphViewDataSource, SplitViewBarButtonItemPresenter> //set myself as delegate for  protocols from GraphView
+@interface GraphViewController () <GraphViewDataSource, SplitViewBarButtonItemPresenter, CalculatorProgramTableViewControllerDelegate> //set myself as delegate for  protocols from GraphView
 
 @property (nonatomic, weak) IBOutlet GraphView * graphView; //outlet for GraphView
 @property (nonatomic, weak) NSMutableArray * operationsArray; //array of operations stored here
@@ -29,7 +30,21 @@
 @synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
 @synthesize toolBar = _toolBar;
 @synthesize graphNavigationBar = _graphNavigationBar;
+#define FAVORITES_KEY @"CalculatorGraphViewController.Favorites"
+#define FAVORITES_OPERATIONS_KEY @"CalculatorGraphViewController.Favorites.Operations"
 
+- (IBAction)addToFavorites:(id)sender {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favoritesPrograms = [[defaults objectForKey:@"CalculatorGraphViewController.Favorites"] mutableCopy];
+    NSMutableArray *favoritesOperations = [[defaults objectForKey:@"CalculatorGraphViewController.Favorites.Operations"] mutableCopy];
+    if (!favoritesPrograms) favoritesPrograms = [NSMutableArray array];
+    if (!favoritesOperations) favoritesOperations = [NSMutableArray array];
+    if (favoritesPrograms && ![favoritesPrograms containsObject:self.programStack])[favoritesPrograms addObject:self.programStack];
+    if (favoritesOperations)[favoritesOperations addObject:self.operationsArray];
+    [defaults setObject:favoritesPrograms forKey:FAVORITES_KEY];
+    [defaults setObject:favoritesOperations forKey:FAVORITES_OPERATIONS_KEY];
+    [defaults synchronize];
+}
 
 //programStack lazy instantiation
 - (id) programStack {
@@ -124,4 +139,20 @@
     return YES;
 }
 
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"Show Graph Favorites"]) {
+        NSArray *programs = [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITES_KEY];
+        NSMutableArray *operations = [[[NSUserDefaults standardUserDefaults] objectForKey:FAVORITES_OPERATIONS_KEY] mutableCopy];
+        [segue.destinationViewController setPrograms:programs];
+        [segue.destinationViewController setOperationsArray:operations];
+        [segue.destinationViewController setDelegate:self];
+    }
+}
+
+- (void) calculatorProgramTableViewController:(CalculatorGraphTableViewController *)sender choseProgram:(id)program
+{
+    self.programStack = program;
+    [self.graphView setNeedsDisplay];
+}
 @end

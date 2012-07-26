@@ -327,17 +327,6 @@
             {
                 [variables addObject:@"x"];
             }
-            
-            else if ([operand isKindOfClass:[NSString class]] && [operand isEqualToString: @"y"])
-            {
-            [variables addObject:operand];
-            }
-            
-            else if ([operand isKindOfClass:[NSString class]] && [operand isEqualToString: @"foo"])
-            {
-            [variables addObject:operand];
-            }
-        
         } 
     }
     NSSet * variableSet = [[NSSet alloc]initWithArray:variables];
